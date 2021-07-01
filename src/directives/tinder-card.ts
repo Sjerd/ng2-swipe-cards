@@ -1,10 +1,9 @@
 import {
-  Component,
   Directive,
   ElementRef,
   EventEmitter,
   HostListener,
-  Renderer,
+  Renderer2,
   Input,
   Output,
   OnInit,
@@ -40,11 +39,9 @@ export class TinderCardDirective implements OnInit, OnDestroy {
   like: boolean;
 
   element: HTMLElement;
-  renderer: Renderer;
   overlayElement: HTMLElement;
 
-  constructor(el: ElementRef, renderer: Renderer) {
-    this.renderer = renderer;
+  constructor(protected el: ElementRef, protected renderer: Renderer2) {
     this.element = el.nativeElement;
   }
 
@@ -56,17 +53,17 @@ export class TinderCardDirective implements OnInit, OnDestroy {
 
     if (this._overlay) {
       let overlayElm = <HTMLElement>this.element.querySelector('.tinder-overlay');
-      this.renderer.setElementStyle(overlayElm, "transition", "transform 0.6s ease");
-      this.renderer.setElementStyle(overlayElm, "opacity", "0.5");
+      this.renderer.setStyle(overlayElm, "transition", "transform 0.6s ease");
+      this.renderer.setStyle(overlayElm, "opacity", "0.5");
     }
   }
 
   onSwipeLikeCb(event: any) {
     if (this._overlay) {
       let overlayElm = <HTMLElement>this.element.querySelector('.tinder-overlay');
-      this.renderer.setElementStyle(overlayElm, "transition", "opacity 0s ease");
+      this.renderer.setStyle(overlayElm, "transition", "opacity 0s ease");
       let opacity = (event.distance < 0 ? event.distance * -1 : event.distance) * 0.5 / this.element.offsetWidth;
-      this.renderer.setElementStyle(overlayElm, "opacity", opacity.toString());
+      this.renderer.setStyle(overlayElm, "opacity", opacity.toString());
     }
   }
 
@@ -82,9 +79,9 @@ export class TinderCardDirective implements OnInit, OnDestroy {
       (this.orientation !== "y" && event.deltaX > 0);
     let opacity = (event.distance < 0 ? event.distance * -1 : event.distance) * 0.5 / this.element.offsetWidth;
     if (!!this._overlay) {
-      this.renderer.setElementStyle(this.overlayElement, "transition", "opacity 0s ease");
-      this.renderer.setElementStyle(this.overlayElement, "opacity", opacity.toString());
-      this.renderer.setElementStyle(this.overlayElement, "background-color", this._overlay[like ? "like" : "dislike"].backgroundColor);
+      this.renderer.setStyle(this.overlayElement, "transition", "opacity 0s ease");
+      this.renderer.setStyle(this.overlayElement, "opacity", opacity.toString());
+      this.renderer.setStyle(this.overlayElement, "background-color", this._overlay[like ? "like" : "dislike"].backgroundColor);
     }
     this.translate({
       x: event.deltaX,
@@ -96,8 +93,8 @@ export class TinderCardDirective implements OnInit, OnDestroy {
   @HostListener('onAbort', ['$event'])
   onAbort(event: any) {
     if (!!this._overlay) {
-      this.renderer.setElementStyle(this.overlayElement, "transition", "opacity 0.2s ease");
-      this.renderer.setElementStyle(this.overlayElement, "opacity", "0");
+      this.renderer.setStyle(this.overlayElement, "transition", "opacity 0.2s ease");
+      this.renderer.setStyle(this.overlayElement, "opacity", "0");
     }
   }
 
@@ -115,8 +112,8 @@ export class TinderCardDirective implements OnInit, OnDestroy {
 
   translate(params: any) {
     if (!this.fixed) {
-      this.renderer.setElementStyle(this.element, "transition", "transform " + (params.time || 0) + "s ease");
-      this.renderer.setElementStyle(this.element, "webkitTransform", "translate3d(" +
+      this.renderer.setStyle(this.element, "transition", "transform " + (params.time || 0) + "s ease");
+      this.renderer.setStyle(this.element, "webkitTransform", "translate3d(" +
         (params.x && (!this.orientation || this.orientation.indexOf("x") != -1) ? (params.x) : 0) +
         "px, " +
         (params.y && (!this.orientation || this.orientation.indexOf("y") != -1) ? (params.y) : 0) +
@@ -131,19 +128,19 @@ export class TinderCardDirective implements OnInit, OnDestroy {
       this.overlayElement = document.createElement("div");
       this.overlayElement.className += " card-overlay";
       this.element.appendChild(this.overlayElement);
-      this.renderer.setElementStyle(this.overlayElement, "transform", "translateZ(0)");
-      this.renderer.setElementStyle(this.overlayElement, "opacity", "0");
-      this.renderer.setElementStyle(this.overlayElement, "border-radius", "2px");
-      this.renderer.setElementStyle(this.overlayElement, "position", "absolute");
-      this.renderer.setElementStyle(this.overlayElement, "width", "100%");
-      this.renderer.setElementStyle(this.overlayElement, "height", "100%");
-      this.renderer.setElementStyle(this.overlayElement, "top", "0");
-      this.renderer.setElementStyle(this.overlayElement, "left", "0");
-      this.renderer.setElementStyle(this.overlayElement, "display", "flex");
-      this.renderer.setElementStyle(this.overlayElement, "align-items", "center");
-      this.renderer.setElementStyle(this.overlayElement, "justify-content", "center");
-      this.renderer.setElementStyle(this.overlayElement, "overflow", "hidden");
-      this.renderer.setElementStyle(this.overlayElement, "color", "white");
+      this.renderer.setStyle(this.overlayElement, "transform", "translateZ(0)");
+      this.renderer.setStyle(this.overlayElement, "opacity", "0");
+      this.renderer.setStyle(this.overlayElement, "border-radius", "2px");
+      this.renderer.setStyle(this.overlayElement, "position", "absolute");
+      this.renderer.setStyle(this.overlayElement, "width", "100%");
+      this.renderer.setStyle(this.overlayElement, "height", "100%");
+      this.renderer.setStyle(this.overlayElement, "top", "0");
+      this.renderer.setStyle(this.overlayElement, "left", "0");
+      this.renderer.setStyle(this.overlayElement, "display", "flex");
+      this.renderer.setStyle(this.overlayElement, "align-items", "center");
+      this.renderer.setStyle(this.overlayElement, "justify-content", "center");
+      this.renderer.setStyle(this.overlayElement, "overflow", "hidden");
+      this.renderer.setStyle(this.overlayElement, "color", "white");
     }
   }
 
@@ -167,9 +164,9 @@ export class TinderCardDirective implements OnInit, OnDestroy {
         rotate: (x * 20) / el.clientWidth,
         time: 0.8
       });
-      this.renderer.setElementStyle(this.overlayElement, "transition", "opacity 0.4s ease");
-      this.renderer.setElementStyle(this.overlayElement, "opacity", "0.5");
-      this.renderer.setElementStyle(this.overlayElement, "background-color", this._overlay[params.like ? "like" : "dislike"].backgroundColor);
+      this.renderer.setStyle(this.overlayElement, "transition", "opacity 0.4s ease");
+      this.renderer.setStyle(this.overlayElement, "opacity", "0.5");
+      this.renderer.setStyle(this.overlayElement, "background-color", this._overlay[params.like ? "like" : "dislike"].backgroundColor);
       this.destroy(200);
     });
   }

@@ -4,7 +4,7 @@
   "defaultProject": "app",
   "newProjectRoot": "projects",
   "projects": {
-    "angular-shared-apm": {
+    "ng2-swipe-cards": {
       "projectType": "library",
       "root": "./",
       "sourceRoot": "./src",

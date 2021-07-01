@@ -3,7 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   HostListener,
-  Renderer,
+  Renderer2,
   Input,
   Output,
   OnInit,
@@ -93,14 +93,14 @@ export class CardComponent implements OnInit, OnDestroy {
 
   direction: any = { x: 0, y: 0 };
 
-  constructor(protected el: ElementRef, public renderer: Renderer) {
+  constructor(protected el: ElementRef, protected renderer: Renderer2) {
     this.element = el.nativeElement;
   }
 
   translate(params: any) {
     if (!this.fixed && !this.released) {
-      this.renderer.setElementStyle(this.element, "transition", "transform " + (params.time || 0) + "s ease");
-      this.renderer.setElementStyle(this.element, "webkitTransform", "translate3d(" +
+      this.renderer.setStyle(this.element, "transition", "transform " + (params.time || 0) + "s ease");
+      this.renderer.setStyle(this.element, "webkitTransform", "translate3d(" +
         (params.x && (!this._orientation || this._orientation.indexOf("x") != -1) ? (params.x) : 0) +
         "px, " +
         (params.y && (!this._orientation || this._orientation.indexOf("y") != -1) ? (params.y) : 0) +
@@ -148,8 +148,8 @@ export class CardComponent implements OnInit, OnDestroy {
     if (this.element.parentElement) {
       let height = this.element.parentElement.clientHeight;
       let width = this.element.parentElement.clientWidth;
-      this.renderer.setElementStyle(this.element, "height", height + 'px');
-      this.renderer.setElementStyle(this.element, "width", width + 'px');
+      this.renderer.setStyle(this.element, "height", height + 'px');
+      this.renderer.setStyle(this.element, "width", width + 'px');
       this.releaseRadius = {
         x: width / 4,
         y: height / 4
