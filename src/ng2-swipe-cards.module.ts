@@ -5,16 +5,18 @@ import { CardComponent } from './components/card';
 import { TinderCardDirective } from './directives/tinder-card';
 
 import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import * as Hammer from 'hammerjs';
 
 export class HammerConfig extends HammerGestureConfig {
   overrides = <any>{
-    'pan': { enable: true }
+    pan: { direction: Hammer.DIRECTION_ALL },
+    swipe: { direction: Hammer.DIRECTION_VERTICAL },
   }
 }
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
   ],
   declarations: [
     CardComponent,

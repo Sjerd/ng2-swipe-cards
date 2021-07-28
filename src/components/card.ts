@@ -109,7 +109,6 @@ export class CardComponent implements OnInit, OnDestroy {
   }
 
   onSwipeCb(event: any) {
-    let rotate = ((event.deltaX * 20) / this.element.clientWidth);
     this.direction.x = event.deltaX > 0 ? 1 : -1;
     this.direction.y = event.deltaY > 0 ? 1 : -1;
     this.translate({
@@ -194,5 +193,4 @@ export class CardComponent implements OnInit, OnDestroy {
       this._callDestroy.unsubscribe();
     }
   }
-
 }
